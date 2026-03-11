@@ -9,7 +9,8 @@ Tracked here so the same rules and settings stay in sync across all devices.
 |------|---------|
 | `AGENTS.md` | Global agent rules -- coding standards, git policies, commit conventions |
 | `opencode.json` | opencode app config (server port, model settings, etc.) |
-| `update.sh` | Pull latest config from this repo |
+| `rules/` | Modular rule files loaded automatically via `opencode.json` |
+| `scripts/update.sh` | Pull latest config from this repo |
 
 Everything else in `~/.config/opencode/` (`node_modules/`, `package.json`,
 `bun.lock`) is gitignored -- those are managed locally per device.
@@ -20,7 +21,7 @@ Clone directly into the opencode config directory:
 
 ```bash
 git clone https://github.com/xransum/opencode-config.git ~/.config/opencode
-chmod +x ~/.config/opencode/update.sh
+chmod +x ~/.config/opencode/scripts/update.sh
 ```
 
 If `~/.config/opencode/` already exists on the device, move it out of the way
@@ -29,7 +30,7 @@ first or merge manually:
 ```bash
 mv ~/.config/opencode ~/.config/opencode.bak
 git clone https://github.com/xransum/opencode-config.git ~/.config/opencode
-chmod +x ~/.config/opencode/update.sh
+chmod +x ~/.config/opencode/scripts/update.sh
 ```
 
 After cloning, install the opencode plugin (one-time, per device):
@@ -46,7 +47,7 @@ npm install
 Run the update script from anywhere:
 
 ```bash
-~/.config/opencode/update.sh
+~/.config/opencode/scripts/update.sh
 ```
 
 Or manually:
@@ -66,7 +67,7 @@ git commit -m "chore(rules): ..."
 git push origin main
 ```
 
-Then run `update.sh` on any other devices to pull the changes down.
+Then run `scripts/update.sh` on any other devices to pull the changes down.
 
 ## Plugin install (one-time, per device)
 
