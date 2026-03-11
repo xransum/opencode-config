@@ -1,5 +1,20 @@
 # Global Rules
 
+## Python Package Manager Detection
+
+Before running any Python tooling commands (nox, pytest, mypy, ruff, black, etc.),
+detect the project's package manager by inspecting the project root:
+
+- If `uv.lock` exists, or `pyproject.toml` contains `[tool.uv]` -> use `uv run`
+  - Examples: `uv run nox`, `uv run pytest`, `uv run mypy src/`
+- If `poetry.lock` exists, or `pyproject.toml` contains `[tool.poetry]` -> use `poetry run`
+  - Examples: `poetry run nox`, `poetry run pytest`, `poetry run mypy src/`
+- If a `.venv/bin/<tool>` binary exists and neither of the above apply -> invoke
+  it directly (e.g. `.venv/bin/nox`, `.venv/bin/pytest`)
+- Otherwise fall back to the system PATH binary
+
+Always detect before running - never assume a bare `nox` or `pytest` call will work.
+
 ## Git Push and Branch Protection
 
 Never push directly to `main` (or any other protected branch) without explicit
@@ -19,6 +34,29 @@ Exceptions (still require user confirmation, but may be presented as urgent):
 This rule exists because bypassing branch protection -- even as an admin --
 circumvents review history, leaves no PR trail, and cannot be undone without
 a force push.
+
+## Plain ASCII Punctuation
+
+Never use Unicode punctuation characters in any file you write or edit.
+Always substitute the plain ASCII equivalent:
+
+| Avoid | Use instead |
+|-------|-------------|
+| `"` `"` curly double quotes | `"` |
+| `'` `'` curly single quotes | `'` |
+| `—` em dash | `--` or rewrite the sentence |
+| `–` en dash | `-` |
+| `…` ellipsis | `...` |
+| `·` middle dot | `-` or rewrite |
+| `•` bullet point | use Markdown `- ` lists |
+| `->` Unicode arrows | `->` |
+| non-breaking space (U+00A0) | regular space |
+| `«` `»` guillemets | `"` |
+| `‹` `›` single guillemets | `'` |
+
+This applies to prose, comments, commit messages, documentation, and all other
+files. Code string literals are exempt when the value itself must contain a
+specific character.
 
 ## Blog Post Writing
 
@@ -97,7 +135,41 @@ poetry run nox
 Never run bare `nox` or `nox -s <session>` without a `-p` constraint unless
 the user explicitly asks for a full matrix run.
 
+## Project Compliance Docs
 
+Before making any non-trivial change to a project (adding features, refactoring,
+modifying dependencies, changing tooling, editing CI, etc.), check the project
+root for compliance and development documentation and read it first.
+
+Common filenames to look for:
+
+- `DEVELOPMENT.md` - coding standards, tooling setup, quality gates, contribution workflow
+- `CONTRIBUTING.md` - contribution rules, branch and PR conventions
+- `ARCHITECTURE.md` - structural decisions and module boundaries
+- `STANDARDS.md` or `CODE_STANDARDS.md` - style and quality requirements
+- `AGENTS.md` - project-specific rules for AI agents
+
+If any of these exist, read them before planning or executing changes. Follow
+whatever conventions they define - formatting, tooling commands, naming, test
+requirements, and workflow steps all take precedence over general defaults.
+
+## Pull Request Assignments and Labels
+
+These rules apply only when working in repos owned by `xransum`. Do not assign
+or label PRs in repos owned by other users or organizations.
+
+When creating a pull request in an `xransum` repo:
+
+1. Always assign the PR to `xransum` unless explicitly instructed otherwise,
+   but only after confirming via the GitHub API that `xransum` is in the list
+   of assignable collaborators for that repo.
+
+2. Always apply labels from the repo's existing label set that best reflect the
+   nature of the PR (e.g. `bug`, `enhancement`, `ci`, `dependencies`, `testing`,
+   `documentation`, etc.). Never create new labels - only use what already exists.
+   Apply multiple labels when appropriate.
+
+## Conventional Commits
 
 All commit messages must follow the Conventional Commits 1.0.0 specification.
 
