@@ -31,10 +31,27 @@ When asked to review without a specific focus, do the following:
 
 **Style and consistency** -- deviations from the project's established conventions (formatting, naming, file organization).
 
-For each issue:
-- State the file and line number.
-- Describe the problem concisely.
-- Suggest a concrete fix.
+Severity tags -- prefix every finding with one of:
+
+- [blocker] -- must fix before shipping; correctness bugs, security vulnerabilities, data loss risks
+- [warning] -- should fix; quality, maintainability, or performance issues that will cause pain later
+- [nit]     -- optional; style, naming, minor inconsistencies
+
+For each issue, use this format:
+
+[severity] file:line -- category
+Problem: one sentence describing what is wrong.
+Fix: one sentence describing the concrete change to make.
+
+Example:
+
+[blocker] src/auth.py:42 -- security
+Problem: user-supplied input is interpolated directly into the SQL query.
+Fix: use a parameterized query instead of string formatting.
+
+End every review with a single summary line:
+
+  Result: X blockers, Y warnings, Z nits
 
 If the context is a specific file, diff, or snippet rather than the full project, scope your review to what was provided.
 
