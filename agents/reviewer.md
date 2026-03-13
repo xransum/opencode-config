@@ -1,6 +1,6 @@
 ---
 description: Read-only code review of the current project or provided context
-mode: primary
+mode: subagent
 temperature: 0.1
 permission:
   edit: deny
