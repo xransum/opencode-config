@@ -2,6 +2,25 @@
 
 ---
 
+## Agents File is Auto-Generated
+
+`AGENTS.md` is auto-generated from the rule files under `rules/`. Never edit
+`AGENTS.md` directly -- changes will be overwritten the next time the build
+script runs.
+
+To add or modify a rule:
+1. Create or edit the appropriate file under `rules/<category>/<rule-name>.md`.
+2. Regenerate `AGENTS.md` by running:
+   ```
+   ./scripts/build-agents.sh
+   ```
+
+Rule files are sorted alphabetically by path when assembled, so directory and
+file naming determines order. Use a numeric prefix (e.g. `00-`, `01-`) on a
+filename if a rule must appear before others in the same directory.
+
+---
+
 ## Plain ASCII Punctuation
 
 Never use Unicode punctuation characters in any file you write or edit.
@@ -65,6 +84,28 @@ unless the user explicitly asks for them.
 
 This applies to all responses, documentation, code comments, commit messages,
 pull request descriptions, and any other generated text.
+
+---
+
+## Git Branch Deletion Safety
+
+Never delete `master`, `main`, `develop`, or any other long-lived/default branch
+without explicit, unambiguous confirmation from the user -- even if it appears
+stale, behind, or orphaned.
+
+Before deleting any branch:
+1. List all branches proposed for deletion clearly and individually.
+2. Call out any long-lived branches (e.g. `master`, `main`, `develop`) by name
+   and explicitly ask the user to confirm each one separately.
+3. Do not treat a general "yea" or "yes" as blanket approval to delete
+   long-lived branches unless the user named them specifically.
+
+If a long-lived branch is accidentally deleted and the remote still exists,
+restore it immediately with:
+
+```
+git branch <branch> origin/<branch>
+```
 
 ---
 
